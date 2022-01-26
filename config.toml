@@ -1,0 +1,25 @@
+[[units]]
+identifier = "destroyer"
+offensive_firepower = 10.0
+defensive_firepower = 0.0
+staying_power = 100.0
+
+[[units]]
+identifier = "cruiser"
+offensive_firepower = 20.0
+defensive_firepower = 10.0
+staying_power = 200.0
+
+[[units]]
+identifier = "battleship"
+offensive_firepower = 50.0
+defensive_firepower = 50.0
+staying_power = 500.0
+
+[team_1]
+name = "blue"
+units = { destroyer = 100 }
+
+[team_2]
+name = "red"
+units = { destroyer = 10, cruiser = 5, battleship = 1}
