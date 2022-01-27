@@ -67,5 +67,6 @@ impl TeamInstance {
                 target.staying_power -= incoming_damage;
             }
         }
+        self.units.retain(Unit::is_alive);
     }
 }
