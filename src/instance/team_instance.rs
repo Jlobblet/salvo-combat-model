@@ -1,5 +1,5 @@
 use crate::config::simulation_config::SimulationConfig;
-use crate::config::unit::Unit;
+use crate::config::unit::{NamedUnit, Unit};
 use eyre::{eyre, Context, Report, Result};
 use std::collections::HashMap;
 
@@ -7,19 +7,20 @@ pub struct TeamInstance {
     pub units: Vec<Unit>,
 }
 
-impl TryFrom<(HashMap<String, i64>, &HashMap<String, Unit>)> for TeamInstance {
+impl TryFrom<(HashMap<String, i64>, &HashMap<String, NamedUnit>)> for TeamInstance {
     type Error = Report;
 
     fn try_from(
-        (units, map): (HashMap<String, i64>, &HashMap<String, Unit>),
+        (units, map): (HashMap<String, i64>, &HashMap<String, NamedUnit>),
     ) -> Result<Self, Self::Error> {
         let mut u: Vec<Unit> = Vec::new();
         for (identifier, count) in units {
             let unit = map
                 .get(&identifier)
-                .ok_or_else(|| eyre!("Could not find unit with identifier {}", identifier))?;
+                .ok_or_else(|| eyre!("Could not find unit with identifier {}", identifier))?
+                .unit;
             for _ in 0..count {
-                u.push(unit.clone());
+                u.push(unit);
             }
         }
         Ok(TeamInstance { units: u })
