@@ -59,8 +59,9 @@ impl TeamInstance {
     }
 
     pub fn damage(&mut self, attacks: Vec<f64>) {
+        let len = self.units.len();
         for (i, attack) in attacks.into_iter().enumerate() {
-            let target = &mut self.units[i % self.units.len()];
+            let target = &mut self.units[i % len];
             if target.is_alive() {
                 let incoming_damage = attack - target.defensive_firepower;
                 target.staying_power -= incoming_damage;
