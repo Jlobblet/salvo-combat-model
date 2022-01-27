@@ -47,28 +47,23 @@ impl TryFrom<SimulationConfig> for (TeamInstance, TeamInstance) {
 
 impl TeamInstance {
     pub fn is_alive(&self) -> bool {
-        self.units.iter().any(|u| u.staying_power > 0.0)
+        self.units.iter().any(Unit::is_alive)
     }
 
     pub fn attacks(&self) -> Vec<f64> {
         self.units
             .iter()
-            .filter(|u| u.staying_power > 0.0)
+            .filter(|u| u.is_alive())
             .map(|u| u.offensive_firepower)
             .collect()
     }
 
     pub fn damage(&mut self, attacks: Vec<f64>) {
-        for attack in attacks {
-            let index = self.units.iter().position(|u| u.staying_power > 0.0);
-            if let Some(i) = index {
-                let unit = &mut self.units[i];
-                let incoming_damage = attack - unit.defensive_firepower;
-                if incoming_damage > 0.0 {
-                    unit.staying_power -= incoming_damage;
-                }
-            } else {
-                break;
+        for (i, attack) in attacks.into_iter().enumerate() {
+            let target = &mut self.units[i % self.units.len()];
+            if target.is_alive() {
+                let incoming_damage = attack - target.defensive_firepower;
+                target.staying_power -= incoming_damage;
             }
         }
     }
