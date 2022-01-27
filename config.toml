@@ -17,9 +17,7 @@ defensive_firepower = 50.0
 staying_power = 500.0
 
 [team_1]
-name = "blue"
 units = { destroyer = 100 }
 
 [team_2]
-name = "red"
 units = { destroyer = 10, cruiser = 5, battleship = 1}
